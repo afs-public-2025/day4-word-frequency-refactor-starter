@@ -16,22 +16,20 @@ public class WordFrequencyGame {
 
             try {
 
-                List<WordFrequency> inputList = getWordsArraySplitByRegex(inputStr);
+                List<WordFrequency> wordsArraySplitByRegex = getWordsArraySplitByRegex(inputStr);
 
                 //get the map for the next step of sizing the same word
-                Map<String, List<WordFrequency>> map =groupWordFrequencyByWord(inputList);
+                Map<String, List<WordFrequency>> classifiedWordFrequencyMap =groupWordFrequencyByWord(wordsArraySplitByRegex);
 
-                List<WordFrequency> list = new ArrayList<>();
-                for (Map.Entry<String, List<WordFrequency>> entry : map.entrySet()){
+                List<WordFrequency> updatedWordToRealFrequency = new ArrayList<>();
+                for (Map.Entry<String, List<WordFrequency>> entry : classifiedWordFrequencyMap.entrySet()){
                     WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().size());
-                    list.add(wordFrequency);
+                    updatedWordToRealFrequency.add(wordFrequency);
                 }
-                inputList = list;
-
-                inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+                updatedWordToRealFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
                 StringJoiner joiner = new StringJoiner("\n");
-                for (WordFrequency w : inputList) {
+                for (WordFrequency w : wordsArraySplitByRegex) {
                     String s = w.getValue() + " " +w.getWordCount();
                     joiner.add(s);
                 }
