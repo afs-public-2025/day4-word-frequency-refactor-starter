@@ -12,7 +12,7 @@ public class WordFrequencyGame {
             return String.format("%s %d", wordList.get(0), 1);
         }
 
-        return "";
+        return convertMapToResult(sortMapByValue(convertWordListToFrequencyMap(wordList)));
     }
 
     public Map<String, Integer> convertWordListToFrequencyMap(List<String> wordList) {
