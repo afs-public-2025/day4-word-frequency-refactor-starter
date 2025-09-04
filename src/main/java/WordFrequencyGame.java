@@ -3,49 +3,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
-import java.io.CharArrayWriter;
-
-import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
-    public String processSingleWordInput(String inputStr) {
+    public String processSingleWordFrequency(String inputStr) {
         if (inputStr.split("\\s+").length == 1) {
             return inputStr + " 1"; // 返回单词和数字 1
         }
         return null;
     }
-    public List<Input> processMultipleWords(String inputStr) {
+    public List<WordFrequency> processMultipleWordsFrequency(String inputStr) {
         String[] wordsArray = inputStr.split("\\s+");
 
-        List<Input> inputList = new ArrayList<>();
+        List<WordFrequency> wordFrequencyList = new ArrayList<>();
         for (String word : wordsArray) {
-            Input input = new Input(word, 1);
-            inputList.add(input);
+            WordFrequency wordFrequency = new WordFrequency(word, 1);
+            wordFrequencyList.add(wordFrequency);
         }
         //get the map for the next step of sizing the same word
-        Map<String, List<Input>> map =getListMap(inputList);
+        Map<String, List<WordFrequency>> wordFrequencyMap =getListMap(wordFrequencyList);
 
-        List<Input> wordList = new ArrayList<>();
-        for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-            Input input = new Input(entry.getKey(), entry.getValue().size());
-            wordList.add(input);
+        List<WordFrequency> wordFinalList = new ArrayList<>();
+        for (Map.Entry<String, List<WordFrequency>> entry : wordFrequencyMap.entrySet()){
+            WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().size());
+            wordFinalList.add(wordFrequency);
         }
 
-        return wordList;
+        return wordFinalList;
     }
 
-    public String getSameWord(String inputStr){
-        String singleWorld=processSingleWordInput(inputStr);
-
+    public String processWordFormat(String inputStr){
+        String singleWorld= processSingleWordFrequency(inputStr);
         if (singleWorld!=null) {
             return singleWorld;
         } else {
             try {
-                List<Input> inputList=processMultipleWords(inputStr);
-                inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-
+                List<WordFrequency> wordFrequencyList = processMultipleWordsFrequency(inputStr);
+                wordFrequencyList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
                 StringJoiner joiner = new StringJoiner("\n");
-                for (Input w : inputList) {
+                for (WordFrequency w : wordFrequencyList) {
                     String s = w.getValue() + " " +w.getWordCount();
                     joiner.add(s);
                 }
@@ -58,18 +53,17 @@ public class WordFrequencyGame {
     }
 
 
-    private Map<String,List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> map = new HashMap<>();
-        for (Input input :  inputList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(input.getValue())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(input);
-                map.put(input.getValue(), arr);
+    private Map<String,List<WordFrequency>> getListMap(List<WordFrequency> wordFrequencyList) {
+        Map<String, List<WordFrequency>> map = new HashMap<>();
+        for (WordFrequency wordFrequency : wordFrequencyList){
+            if (!map.containsKey(wordFrequency.getValue())){
+                ArrayList wordlist = new ArrayList<>();
+                wordlist.add(wordFrequency);
+                map.put(wordFrequency.getValue(), wordlist);
             }
 
             else {
-                map.get(input.getValue()).add(input);
+                map.get(wordFrequency.getValue()).add(wordFrequency);
             }
         }
 
