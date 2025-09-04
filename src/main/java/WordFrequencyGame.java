@@ -6,66 +6,70 @@ import java.util.StringJoiner;
 
 public class WordFrequencyGame {
 
-    public String outputResult(String inputStr){
-        if(isOneWord(inputStr)){
-            return inputStr + " 1";
-        }
-        else {
-            return notOneword(inputStr);
+    public String getWordFrequency(String inputText) {
+        if (isSingleWord(inputText)) {
+            return inputText + " 1";
+        } else {
+            return calculateWordFrequency(inputText);
         }
     }
 
-
-    private Map<String, List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> map = new HashMap<>();
-        for (Input input : inputList) {
-            map.computeIfAbsent(input.getWords(), k -> new ArrayList<>()).add(input);
+    private Map<String, List<Input>> groupWordsByName(List<Input> wordEntries) {
+        Map<String, List<Input>> wordGroups = new HashMap<>();
+        for (Input entry : wordEntries) {
+            wordGroups.computeIfAbsent(entry.getWord(), k -> new ArrayList<>()).add(entry);
         }
-        return map;
+        return wordGroups;
     }
 
-    public boolean isOneWord(String inputStr) {
-        return inputStr.split("\\s+").length == 1;
+    public boolean isSingleWord(String inputText) {
+        return inputText.split("\\s+").length == 1;
     }
 
-    public String notOneword(String inputStr) {
+    public String calculateWordFrequency(String inputText) {
         try {
-            List<Input> wordlist = splitWords(inputStr);
-            wordlist = countWordFrequency(wordlist);
-            sortByFrequencyDesc(wordlist);
-            return formatResult(wordlist);
+            List<Input> wordList = parseInputText(inputText);
+            wordList = countFrequencies(wordList);
+            sortByFrequencyDesc(wordList);
+            return formatResult(wordList);
         } catch (Exception e) {
             return "Calculate Error";
         }
     }
 
-    private List<Input> splitWords(String inputStr) {
-        String[] wordarray = inputStr.split("\\s+");
-        List<Input> wordlist = new ArrayList<>();
-        for (String word : wordarray) {
-            wordlist.add(new Input(word, 1));
+    private List<Input> parseInputText(String inputText) {
+        String[] words = inputText.split("\\s+");
+        List<Input> wordEntries = new ArrayList<>();
+        for (String word : words) {
+            wordEntries.add(new Input(word, 1));
         }
-        return wordlist;
+        return wordEntries;
     }
 
-    private List<Input> countWordFrequency(List<Input> wordlist) {
-        Map<String, List<Input>> map = getListMap(wordlist);
+    private List<Input> countFrequencies(List<Input> wordList) {
+        Map<String, List<Input>> wordGroups = groupWordsByName(wordList);
+
         List<Input> result = new ArrayList<>();
-        for (Map.Entry<String, List<Input>> entry : map.entrySet()) {
+        for (Map.Entry<String, List<Input>> entry : wordGroups.entrySet()) {
             result.add(new Input(entry.getKey(), entry.getValue().size()));
         }
         return result;
     }
 
-    private void sortByFrequencyDesc(List<Input> wordlist) {
-        wordlist.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+    private void sortByFrequencyDesc(List<Input> wordList) {
+        wordList.sort((w1, w2) -> w2.getFrequency() - w1.getFrequency());
     }
 
-    private String formatResult(List<Input> wordlist) {
+    private String formatResult(List<Input> wordList) {
         StringJoiner joiner = new StringJoiner("\n");
-        for (Input word : wordlist) {
-            joiner.add(word.getWords() + " " + word.getWordCount());
+        for (Input wordEntry : wordList) {
+            joiner.add(wordEntry.getWord() + " " + wordEntry.getFrequency());
         }
         return joiner.toString();
     }
+
+    public String getResult(String inputStr) {
+        return getWordFrequency(inputStr);
+    }
+
 }
