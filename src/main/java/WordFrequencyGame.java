@@ -15,24 +15,18 @@ public class WordFrequencyGame {
         } else {
 
             try {
-            return buildResult(covertToInput(countSameWords(inputStr.split("\\s+"))));
+            return buildResult(covertToWordFrequencyList(inputStr.split("\\s+")));
             } catch (Exception e) {
                 return "Calculate Error";
             }
         }
     }
 
-    private Map<String,Long> countSameWords(String[] spitedWords) {
-        return Arrays.stream(spitedWords).collect(Collectors.groupingBy(s -> s, Collectors.counting()));
-    }
-
-    private List<WordFrequency> covertToInput(Map<String,Long> map) {
-        List<WordFrequency> list = new ArrayList<>();
-        for (Map.Entry<String, Long> entry : map.entrySet()) {
-            WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().intValue());
-            list.add(wordFrequency);
-        }
-        return list;
+    private List<WordFrequency> covertToWordFrequencyList(String[] spitedWords) {
+         return Arrays.stream(spitedWords).collect(Collectors.groupingBy(s -> s, Collectors.counting()))
+           .entrySet().stream().map(
+             entry -> new WordFrequency(entry.getKey(), entry.getValue().intValue())
+           ).collect(Collectors.toList());
     }
 
     private String buildResult(List<WordFrequency> wordFrequencyList) {
