@@ -26,12 +26,6 @@ public class WordFrequencyGame {
         }
     }
 
-    private Map<String, List<WordEntry>> groupWordsByName(List<WordEntry> wordEntries) {
-        return wordEntries.stream()
-          .collect(Collectors.groupingBy(WordEntry::getWord));
-    }
-
-
     private List<WordEntry> parseInputText(String inputText) {
         return Arrays.stream(inputText.split("\\s+"))
           .map(word -> new WordEntry(word, 1))
@@ -44,6 +38,10 @@ public class WordFrequencyGame {
           .collect(Collectors.toList());
     }
 
+    private Map<String, List<WordEntry>> groupWordsByName(List<WordEntry> wordEntries) {
+        return wordEntries.stream()
+          .collect(Collectors.groupingBy(WordEntry::getWord));
+    }
     private void sortByFrequencyDesc(List<WordEntry> wordList) {
         wordList.sort((w1, w2) -> w2.getFrequency() - w1.getFrequency());
     }
