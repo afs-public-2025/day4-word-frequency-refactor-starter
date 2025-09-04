@@ -6,23 +6,14 @@ import java.util.StringJoiner;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
-
-
         if (inputStr.split("\\s+").length==1) {
             return inputStr + " 1";
         } else {
-
             try {
 
-                //split the input string with 1 to n pieces of spaces
                 String[] words = inputStr.split("\\s+");
 
-                List<Word> wordsList = getWordList(words);
-
-                //get the map for the next step of sizing the same word
-                Map<String, List<Word>> map =getListMap(wordsList);
-
-                wordsList = getWordListFromMap(map);
+                List<Word> wordsList=calculateWordFrequency(words);
 
                 wordsList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
@@ -39,46 +30,19 @@ public class WordFrequencyGame {
             }
         }
     }
+    private  static  List<Word> calculateWordFrequency(String[] words){
+        Map<String, Integer> wordFrequencyMap = new HashMap<>();
 
-    private static List<Word> getWordListFromMap(Map<String, List<Word>> map) {
-        List<Word> wordsList;
-        List<Word> list = new ArrayList<>();
-        for (Map.Entry<String, List<Word>> entry : map.entrySet()){
-            Word input = new Word(entry.getKey(), entry.getValue().size());
-            list.add(input);
-        }
-        wordsList = list;
-        return wordsList;
-    }
-
-    private static List<Word> getWordList(String[] words) {
-        List<Word> wordsList = new ArrayList<>();
         for (String word : words) {
-            Word input = new Word(word, 1);
-            wordsList.add(input);
+            wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
         }
+
+        List<Word> wordsList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
+            wordsList.add(new Word(entry.getKey(), entry.getValue()));
+        }
+
         return wordsList;
     }
-
-
-    private Map<String,List<Word>> getListMap(List<Word> wordsList) {
-        Map<String, List<Word>> map = new HashMap<>();
-        for (Word word :  wordsList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(word.getValue())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(word);
-                map.put(word.getValue(), arr);
-            }
-
-            else {
-                map.get(word.getValue()).add(word);
-            }
-        }
-
-
-        return map;
-    }
-
 
 }
