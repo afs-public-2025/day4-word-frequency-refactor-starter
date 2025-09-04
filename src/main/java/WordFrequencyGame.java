@@ -19,7 +19,7 @@ public class WordFrequencyGame {
                 List<WordFrequency> inputList = getWordsArraySplitByRegex(inputStr);
 
                 //get the map for the next step of sizing the same word
-                Map<String, List<WordFrequency>> map =getListMap(inputList);
+                Map<String, List<WordFrequency>> map =groupWordFrequencyByWord(inputList);
 
                 List<WordFrequency> list = new ArrayList<>();
                 for (Map.Entry<String, List<WordFrequency>> entry : map.entrySet()){
@@ -47,33 +47,36 @@ public class WordFrequencyGame {
     private List<WordFrequency> getWordsArraySplitByRegex(String targetString) {
         String[] wordsArraySplitByRegex = targetString.split(SPACE_REGEX);
         List<WordFrequency> wordFrequencyList = new ArrayList<>();
-        for (String str : wordsArraySplitByRegex) {
-            WordFrequency wordFrequency = new WordFrequency(str, INITIAL_COUNT);
-            wordFrequencyList.add(wordFrequency);
-        }
         Stream.of(wordsArraySplitByRegex).forEach(word -> {
             wordFrequencyList.add(new WordFrequency(word, INITIAL_COUNT));
         });
         return wordFrequencyList;
     }
 
-    private Map<String,List<WordFrequency>> getListMap(List<WordFrequency> wordFrequencyList) {
-        Map<String, List<WordFrequency>> map = new HashMap<>();
-        for (WordFrequency wordFrequency : wordFrequencyList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(wordFrequency.getValue())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(wordFrequency);
-                map.put(wordFrequency.getValue(), arr);
-            }
+    private List<WordFrequency> getWordsArraySplitBySpace(String targetString) {
+        String[] wordsArraySplitBySpace = targetString.split(SPACE_REGEX);
+        List<WordFrequency> wordFrequencyList = new ArrayList<>();
+        for (String str : wordsArraySplitBySpace) {
+            WordFrequency wordFrequency = new WordFrequency(str, INITIAL_COUNT);
+            wordFrequencyList.add(wordFrequency);
+        }
+        return wordFrequencyList;
+    }
 
-            else {
-                map.get(wordFrequency.getValue()).add(wordFrequency);
+    private Map<String,List<WordFrequency>> groupWordFrequencyByWord(List<WordFrequency> wordFrequencyList) {
+        Map<String, List<WordFrequency>> classifiedWordFrequencyMap = new HashMap<>();
+        for (WordFrequency wordFrequency : wordFrequencyList){
+            if (!classifiedWordFrequencyMap.containsKey(wordFrequency.getValue())){
+                ArrayList<WordFrequency> matchingWordFrequency = new ArrayList<>();
+                matchingWordFrequency.add(wordFrequency);
+                classifiedWordFrequencyMap.put(wordFrequency.getValue(), matchingWordFrequency);
+            } else {
+                classifiedWordFrequencyMap.get(wordFrequency.getValue()).add(wordFrequency);
             }
         }
 
 
-        return map;
+        return classifiedWordFrequencyMap;
     }
 
 
