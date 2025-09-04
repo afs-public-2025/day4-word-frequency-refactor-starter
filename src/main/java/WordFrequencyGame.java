@@ -23,7 +23,7 @@ public class WordFrequencyGame {
             String lowerCasedWord = word.toLowerCase();
             WordFrequency wordFrequency = findWordFrequency(wordFrequencyList, lowerCasedWord);
             if (wordFrequency == null) {
-                wordFrequencyList.add(new WordFrequency(word, 1));
+                wordFrequencyList.add(new WordFrequency(lowerCasedWord, 1));
             } else {
                 wordFrequency.incrementFrequency();
             }
