@@ -3,6 +3,10 @@ import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr) {
+        if (inputStr == null || inputStr.trim().isEmpty()) {
+            return "";
+        }
+
         List<String> words = splitIntoWords(inputStr);
         List<Word> wordFrequencies = calculateWordFrequencies(words);
         sortWordsByFrequency(wordFrequencies);
