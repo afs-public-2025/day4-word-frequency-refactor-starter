@@ -9,7 +9,11 @@ public class WordFrequencyGame {
         List<WordFrequency> sourceWordFrequencyList=convertWordFrequencyMapToSortedWordFrequencyList(
                 splitStringToWordFrequencyMap(inputStr)
         );
-        return "";
+        StringBuilder resultBuilder=new StringBuilder().append("\n");
+        sourceWordFrequencyList.stream().forEach((wordFrequency )->{
+            resultBuilder.append(wordFrequency.getWord()+" "+wordFrequency.getOccurrenceFrequency());
+        });
+        return resultBuilder.toString();
 
 //        if (inputStr.split("\\s+").length==1) {
 //            return inputStr + " 1";
