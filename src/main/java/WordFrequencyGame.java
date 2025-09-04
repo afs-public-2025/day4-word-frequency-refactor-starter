@@ -31,11 +31,8 @@ public class WordFrequencyGame {
 
     private String buildResult(List<WordFrequency> wordFrequencyList) {
         wordFrequencyList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-        StringJoiner reu = new StringJoiner("\n");
-        for (WordFrequency wordFrequency : wordFrequencyList) {
-            String s = wordFrequency.getWord() + " " +wordFrequency.getWordCount();
-            reu.add(s);
-        }
-        return reu.toString();
+        return wordFrequencyList.stream().map(
+          wordFrequency -> wordFrequency.getWord() + " " +wordFrequency.getWordCount()
+        ).collect(Collectors.joining("\n"));
     }
 }
