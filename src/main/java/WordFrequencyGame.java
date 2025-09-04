@@ -1,17 +1,10 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 import java.io.CharArrayWriter;
 
 import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
-
-
-
 
         //split the input string with 1 to n pieces of spaces
         String[] arr = inputStr.split("\\s+");
@@ -58,10 +51,15 @@ public class WordFrequencyGame {
                 map.get(input.getValue()).add(input);
             }
         }
-
-
         return map;
     }
 
+    private Map<String, Integer> getWordCountMap(String[] wordArr) {
+        Map<String, Integer> wordCountMap = new LinkedHashMap<>();
+        for (String word : wordArr) {
+            wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+        }
+        return wordCountMap;
+    }
 
 }
