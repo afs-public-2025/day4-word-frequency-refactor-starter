@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputString) {
@@ -7,15 +8,10 @@ public class WordFrequencyGame {
             for (String s : inputString.split("\\s+")) {
                 countMap.merge(s, 1, Integer::sum);
             }
-            List<Map.Entry<String, Integer>> entries = new ArrayList<>(countMap.entrySet());
-            entries.sort((e1, e2) -> e2.getValue() - e1.getValue());
-
-            StringJoiner result = new StringJoiner("\n");
-            for (Map.Entry<String, Integer> map : entries) {
-                String s = map.getKey() + " " + map.getValue();
-                result.add(s);
-            }
-            return result.toString();
+            return countMap.entrySet().stream()
+                    .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+                    .map(entry -> entry.getKey() + " " + entry.getValue())
+                    .collect(Collectors.joining("\n"));
         } catch (Exception e) {
             return "Calculate Error";
         }
