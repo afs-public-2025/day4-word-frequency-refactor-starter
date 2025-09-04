@@ -18,15 +18,10 @@ public class WordFrequencyGame {
 
                 List<WordFrequency> wordsArraySplitByRegex = getWordsArraySplitByRegex(inputStr);
 
-                //get the map for the next step of sizing the same word
                 Map<String, List<WordFrequency>> classifiedWordFrequencyMap =groupWordFrequencyByWord(wordsArraySplitByRegex);
 
-                List<WordFrequency> updatedWordToRealFrequency = new ArrayList<>();
-                for (Map.Entry<String, List<WordFrequency>> entry : classifiedWordFrequencyMap.entrySet()){
-                    WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().size());
-                    updatedWordToRealFrequency.add(wordFrequency);
-                }
-                updatedWordToRealFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+                List<WordFrequency> realWordFrequency = getRealWordFrequency(classifiedWordFrequencyMap);
+                realWordFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
                 StringJoiner joiner = new StringJoiner("\n");
                 for (WordFrequency w : wordsArraySplitByRegex) {
@@ -51,14 +46,13 @@ public class WordFrequencyGame {
         return wordFrequencyList;
     }
 
-    private List<WordFrequency> getWordsArraySplitBySpace(String targetString) {
-        String[] wordsArraySplitBySpace = targetString.split(SPACE_REGEX);
-        List<WordFrequency> wordFrequencyList = new ArrayList<>();
-        for (String str : wordsArraySplitBySpace) {
-            WordFrequency wordFrequency = new WordFrequency(str, INITIAL_COUNT);
-            wordFrequencyList.add(wordFrequency);
+    private List<WordFrequency> getRealWordFrequency(Map<String, List<WordFrequency>> classifiedWordFrequencyMap) {
+        List<WordFrequency> realWordFrequency = new ArrayList<>();
+        for (Map.Entry<String, List<WordFrequency>> entry : classifiedWordFrequencyMap.entrySet()){
+            WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().size());
+            realWordFrequency.add(wordFrequency);
         }
-        return wordFrequencyList;
+        return realWordFrequency;
     }
 
     private Map<String,List<WordFrequency>> groupWordFrequencyByWord(List<WordFrequency> wordFrequencyList) {
