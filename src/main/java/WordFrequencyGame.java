@@ -3,74 +3,69 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
-import java.io.CharArrayWriter;
-
-import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
-    public String getResult(String inputStr){
 
-
-        if (inputStr.split("\\s+").length==1) {
+    public String outputResult(String inputStr){
+        if(isOneWord(inputStr)){
             return inputStr + " 1";
-        } else {
-
-            try {
-
-                //split the input string with 1 to n pieces of spaces
-                String[] arr = inputStr.split("\\s+");
-
-                List<Input> inputList = new ArrayList<>();
-                for (String s : arr) {
-                    Input input = new Input(s, 1);
-                    inputList.add(input);
-                }
-
-                //get the map for the next step of sizing the same word
-                Map<String, List<Input>> map =getListMap(inputList);
-
-                List<Input> list = new ArrayList<>();
-                for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-                    Input input = new Input(entry.getKey(), entry.getValue().size());
-                    list.add(input);
-                }
-                inputList = list;
-
-                inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-
-                StringJoiner joiner = new StringJoiner("\n");
-                for (Input w : inputList) {
-                    String s = w.getValue() + " " +w.getWordCount();
-                    joiner.add(s);
-                }
-                return joiner.toString();
-            } catch (Exception e) {
-
-
-                return "Calculate Error";
-            }
+        }
+        else {
+            return notOneword(inputStr);
         }
     }
 
 
-    private Map<String,List<Input>> getListMap(List<Input> inputList) {
+    private Map<String, List<Input>> getListMap(List<Input> inputList) {
         Map<String, List<Input>> map = new HashMap<>();
-        for (Input input :  inputList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(input.getValue())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(input);
-                map.put(input.getValue(), arr);
-            }
-
-            else {
-                map.get(input.getValue()).add(input);
-            }
+        for (Input input : inputList) {
+            map.computeIfAbsent(input.getWords(), k -> new ArrayList<>()).add(input);
         }
-
-
         return map;
     }
 
+    public boolean isOneWord(String inputStr) {
+        return inputStr.split("\\s+").length == 1;
+    }
 
+    public String notOneword(String inputStr) {
+        try {
+            List<Input> wordlist = splitWords(inputStr);
+            wordlist = countWordFrequency(wordlist);
+            sortByFrequencyDesc(wordlist);
+            return formatResult(wordlist);
+        } catch (Exception e) {
+            return "Calculate Error";
+        }
+    }
+
+    private List<Input> splitWords(String inputStr) {
+        String[] wordarray = inputStr.split("\\s+");
+        List<Input> wordlist = new ArrayList<>();
+        for (String word : wordarray) {
+            wordlist.add(new Input(word, 1));
+        }
+        return wordlist;
+    }
+
+    private List<Input> countWordFrequency(List<Input> wordlist) {
+        Map<String, List<Input>> map = getListMap(wordlist);
+        List<Input> result = new ArrayList<>();
+        for (Map.Entry<String, List<Input>> entry : map.entrySet()) {
+            result.add(new Input(entry.getKey(), entry.getValue().size()));
+        }
+        return result;
+    }
+
+    private void sortByFrequencyDesc(List<Input> wordlist) {
+        wordlist.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+    }
+
+    private String formatResult(List<Input> wordlist) {
+        StringJoiner joiner = new StringJoiner("\n");
+        for (Input word : wordlist) {
+            joiner.add(word.getWords() + " " + word.getWordCount());
+        }
+        return joiner.toString();
+    }
 }
