@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 public class WordFrequencyGame {
     public String getResult(String inputStr) {
         try {
-            Map<String, Integer> wordsCountMap = getWordsCountMap(inputStr);
+            Map<String, Integer> wordsCountMap = getWordsFrequencyMap(inputStr);
 
             List<Word> wordsInfoSortedByCount = getSortedInputList(wordsCountMap);
 
@@ -17,13 +17,13 @@ public class WordFrequencyGame {
         }
     }
 
-    private Map<String, Integer> getWordsCountMap(String inputStr) {
-        Map<String, Integer> wordsCountMap = new HashMap<>();
+    private Map<String, Integer> getWordsFrequencyMap(String inputStr) {
+        Map<String, Integer> wordsFrequencyMap = new HashMap<>();
         String[] wordsArray = inputStr.split("\\s+");
         for (String word : wordsArray) {
-            wordsCountMap.put(word, wordsCountMap.getOrDefault(word, 0) + 1);
+            wordsFrequencyMap.put(word, wordsFrequencyMap.getOrDefault(word, 0) + 1);
         }
-        return wordsCountMap;
+        return wordsFrequencyMap;
     }
 
     private List<Word> getSortedInputList(Map<String, Integer>wordsCountMap) {
@@ -44,5 +44,5 @@ public class WordFrequencyGame {
         }
         return wordFrequencyInfo.toString();
     }
-    
+
 }
