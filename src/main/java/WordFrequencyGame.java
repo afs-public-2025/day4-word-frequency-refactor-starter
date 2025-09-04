@@ -1,8 +1,5 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
@@ -15,45 +12,36 @@ public class WordFrequencyGame {
                 Map<String, List<WordDetail>> wordListmap = getWordListMap(wordList);
                 wordList = getWordList(wordListmap);
                 wordList.sort((word1, word2) -> word2.getCount() - word1.getCount());
-                return buildResult(wordList).toString();
+                return buildResult(wordList);
             } catch (Exception e) {
                 return "Calculate Error";
             }
         }
     }
 
-    private StringJoiner buildResult(List<WordDetail> wordList) {
-        StringJoiner result = new StringJoiner("\n");
-        for (WordDetail word : wordList) {
-            String wordResult = word.getWord() + " " +word.getCount();
-            result.add(wordResult);
-        }
-        return result;
+    private String buildResult(List<WordDetail> wordList) {
+        return wordList.stream()
+                .map(word -> word.getWord() + " " + word.getCount())
+                .collect(Collectors.joining("\n"));
     }
 
     private List<WordDetail> getWordList(Map<String, List<WordDetail>> wordListmap) {
-        List<WordDetail> wordlist = new ArrayList<>();
-        for (Map.Entry<String, List<WordDetail>> entry : wordListmap.entrySet()){
-            WordDetail word = new WordDetail(entry.getKey(), entry.getValue().size());
-            wordlist.add(word);
-        }
+        List<WordDetail> wordlist = wordListmap.entrySet().stream()
+                .map(entry -> new WordDetail(entry.getKey(), entry.getValue().size()))
+                .collect(Collectors.toList());
         return wordlist;
     }
 
     private Map<String,List<WordDetail>> getWordListMap(List<WordDetail> wordList) {
-        Map<String, List<WordDetail>> wordListmap = new HashMap<>();
-        for (WordDetail word :  wordList){
-            wordListmap.computeIfAbsent(word.getWord(), k -> new ArrayList<>()).add(word);
-        }
+        Map<String, List<WordDetail>> wordListmap = wordList.stream()
+                .collect(Collectors.groupingBy(WordDetail::getWord));
         return wordListmap;
     }
 
     private List<WordDetail> initWordList(String[] inputArr){
-        List<WordDetail> wordList = new ArrayList<>();
-        for (String word : inputArr) {
-            WordDetail input = new WordDetail(word, 1);
-            wordList.add(input);
-        }
+        List<WordDetail> wordList = Arrays.stream(inputArr)
+                .map(word -> new WordDetail(word, 1))
+                .collect(Collectors.toList());
         return wordList;
     }
 }
