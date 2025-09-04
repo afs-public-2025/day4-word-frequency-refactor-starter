@@ -9,22 +9,14 @@ import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
-
-
         if (inputStr.split("\\s+").length==1) {
             return inputStr + " 1";
         } else {
-
             try {
-
                 //split the input string with 1 to n pieces of spaces
-                String[] arr = inputStr.split("\\s+");
-
+                String[] inputArr = inputStr.split("\\s+");
                 List<Input> inputList = new ArrayList<>();
-                for (String s : arr) {
-                    Input input = new Input(s, 1);
-                    inputList.add(input);
-                }
+                inputList = splitInput(inputArr, inputList);
 
                 //get the map for the next step of sizing the same word
                 Map<String, List<Input>> map =getListMap(inputList);
@@ -38,20 +30,17 @@ public class WordFrequencyGame {
 
                 inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
-                StringJoiner joiner = new StringJoiner("\n");
-                for (Input w : inputList) {
-                    String s = w.getValue() + " " +w.getWordCount();
-                    joiner.add(s);
+                StringJoiner result = new StringJoiner("\n");
+                for (Input resultList : inputList) {
+                    String s = resultList.getValue() + " " +resultList.getWordCount();
+                    result.add(s);
                 }
-                return joiner.toString();
+                return result.toString();
             } catch (Exception e) {
-
-
                 return "Calculate Error";
             }
         }
     }
-
 
     private Map<String,List<Input>> getListMap(List<Input> inputList) {
         Map<String, List<Input>> map = new HashMap<>();
@@ -62,15 +51,19 @@ public class WordFrequencyGame {
                 arr.add(input);
                 map.put(input.getValue(), arr);
             }
-
             else {
                 map.get(input.getValue()).add(input);
             }
         }
-
-
         return map;
     }
 
-
+    public List<Input> splitInput(String[] inputArr, List<Input> inputList){
+        //split the input string with 1 to n pieces of spaces
+        for (String value : inputArr) {
+            Input input = new Input(value, 1);
+            inputList.add(input);
+        }
+        return inputList;
+    }
 }
