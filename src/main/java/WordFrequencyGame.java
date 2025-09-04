@@ -4,7 +4,11 @@ import java.io.CharArrayWriter;
 import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
-    public String getResult(String inputStr){
+    public String buildWordFrequencyGameResult(String inputStr){
+
+        List<WordFrequency> sourceWordFrequencyList=convertWordFrequencyMapToSortedWordFrequencyList(
+                splitStringToWordFrequencyMap(inputStr)
+        );
         return "";
 
 //        if (inputStr.split("\\s+").length==1) {
@@ -83,13 +87,15 @@ public class WordFrequencyGame {
         });
         return targetWordFrequencyMap;
     }
-    private static List<WordFrequency> convertWordFrequencyMapToWordFrequencyList(Map<String,Integer> sourceWordFrequencyMap){
+    private static List<WordFrequency> convertWordFrequencyMapToSortedWordFrequencyList(Map<String,Integer> sourceWordFrequencyMap){
         List<WordFrequency> targetWordFrequencyList=new ArrayList<>();
         sourceWordFrequencyMap.keySet().stream().forEach((word)->{
             targetWordFrequencyList.add(new WordFrequency(word,sourceWordFrequencyMap.get(word)));
         });
+        targetWordFrequencyList.stream().sorted((w1, w2) -> w2.getOccurrenceFrequency() - w1.getOccurrenceFrequency());
         return targetWordFrequencyList;
     }
+
 
 
 
