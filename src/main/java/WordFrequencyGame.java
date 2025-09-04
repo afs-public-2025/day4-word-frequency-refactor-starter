@@ -1,23 +1,20 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
         try {
-            //split the input string with 1 to n pieces of spaces
-            String[] arr = inputStr.split("\\s+");
+            List<String> extractedWords = Arrays.stream(inputStr.split("\\s+")).toList();
 
             List<Input> inputList = new ArrayList<>();
-            for (String s : arr) {
+            for (String s : extractedWords) {
                 Input input = new Input(s, 1);
                 inputList.add(input);
             }
 
             //get the map for the next step of sizing the same word
-            Map<String, List<Input>> map =getListMap(inputList);
+            Map<String, List<Input>> map = getListMap(inputList);
 
             List<Input> list = new ArrayList<>();
             for (Map.Entry<String, List<Input>> entry : map.entrySet()){
@@ -35,17 +32,19 @@ public class WordFrequencyGame {
             }
             return joiner.toString();
         } catch (Exception e) {
-
-
             return "Calculate Error";
         }
+    }
+
+    private Map<String, Long> buildWordFrequencyMap(List<String> extractedWords) {
+        return extractedWords.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
 
     private Map<String,List<Input>> getListMap(List<Input> inputList) {
         Map<String, List<Input>> map = new HashMap<>();
         for (Input input :  inputList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
             if (!map.containsKey(input.getValue())){
                 ArrayList arr = new ArrayList<>();
                 arr.add(input);
