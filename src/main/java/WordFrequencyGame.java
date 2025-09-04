@@ -12,9 +12,9 @@ public class WordFrequencyGame {
                         splitStringToWordFrequencyMap(inputStr)
                 );
                 StringJoiner resultBuilder = new StringJoiner("\n");
-                sourceWordFrequencyList.stream().forEach((wordFrequency) -> {
-                    resultBuilder.add(wordFrequency.getWord() + " " + wordFrequency.getOccurrenceFrequency());
-                });
+                sourceWordFrequencyList.stream().forEach(wordFrequency ->
+                    resultBuilder.add(wordFrequency.getWord() + " " + wordFrequency.getOccurrenceFrequency())
+                );
                 return resultBuilder.toString();
             } catch (Exception e) {
                 return "Calculate Error";
@@ -24,16 +24,16 @@ public class WordFrequencyGame {
     private static Map<String,Integer> splitStringToWordFrequencyMap(String sourceString){
         String[] sourceWordArray=sourceString.split("\\s+");
         Map<String, Integer> targetWordFrequencyMap = new HashMap<>();
-        Arrays.stream(sourceWordArray).forEach((word)->{
-            targetWordFrequencyMap.put(word, targetWordFrequencyMap.getOrDefault(word,0)+1);
-        });
+        Arrays.stream(sourceWordArray).forEach(word->
+            targetWordFrequencyMap.put(word, targetWordFrequencyMap.getOrDefault(word,0)+1)
+        );
         return targetWordFrequencyMap;
     }
     private static List<WordFrequency> convertWordFrequencyMapToSortedWordFrequencyList(Map<String,Integer> sourceWordFrequencyMap){
         List<WordFrequency> targetWordFrequencyList=new ArrayList<>();
-        sourceWordFrequencyMap.keySet().stream().forEach((word)->{
-            targetWordFrequencyList.add(new WordFrequency(word,sourceWordFrequencyMap.get(word)));
-        });
+        sourceWordFrequencyMap.keySet().stream().forEach(word->
+            targetWordFrequencyList.add(new WordFrequency(word,sourceWordFrequencyMap.get(word)))
+        );
         targetWordFrequencyList.sort((w1, w2) -> w2.getOccurrenceFrequency() - w1.getOccurrenceFrequency());
         return targetWordFrequencyList;
     }
