@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr) {
@@ -37,12 +38,8 @@ public class WordFrequencyGame {
     }
 
     private String generateWordFrequencyInfo(List<Word> inputList) {
-        StringJoiner wordFrequencyInfo = new StringJoiner("\n");
-        for (Word word : inputList) {
-            String wordAndCount = word.getWordValue() + " " + word.getWordCount();
-            wordFrequencyInfo.add(wordAndCount);
-        }
-        return wordFrequencyInfo.toString();
+        return inputList.stream().map(info->info.getWordValue()+" "+info.getWordCount())
+                .collect(Collectors.joining("\n"));
     }
 
 }
