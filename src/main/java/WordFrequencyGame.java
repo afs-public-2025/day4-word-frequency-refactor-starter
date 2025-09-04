@@ -11,18 +11,11 @@ public class WordFrequencyGame {
             return inputStr + " 1";
         } else {
             try {
-                //split the input string with 1 to n pieces of spaces
                 List<WordDetail> wordList = initWordList(words);
 
-                //get the map for the next step of sizing the same word
-                Map<String, List<WordDetail>> map = getWordListMap(wordList);
+                Map<String, List<WordDetail>> wordListmap = getWordListMap(wordList);
 
-                List<WordDetail> list = new ArrayList<>();
-                for (Map.Entry<String, List<WordDetail>> entry : map.entrySet()){
-                    WordDetail input = new WordDetail(entry.getKey(), entry.getValue().size());
-                    list.add(input);
-                }
-                wordList = list;
+                wordList = getWordList(wordListmap);
 
                 wordList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
@@ -38,12 +31,21 @@ public class WordFrequencyGame {
         }
     }
 
-    private Map<String,List<WordDetail>> getWordListMap(List<WordDetail> wordList) {
-        Map<String, List<WordDetail>> map = new HashMap<>();
-        for (WordDetail word :  wordList){
-            map.computeIfAbsent(word.getWord(), k -> new ArrayList<>()).add(word);
+    private List<WordDetail> getWordList(Map<String, List<WordDetail>> wordListmap) {
+        List<WordDetail> wordlist = new ArrayList<>();
+        for (Map.Entry<String, List<WordDetail>> entry : wordListmap.entrySet()){
+            WordDetail word = new WordDetail(entry.getKey(), entry.getValue().size());
+            wordlist.add(word);
         }
-        return map;
+        return wordlist;
+    }
+
+    private Map<String,List<WordDetail>> getWordListMap(List<WordDetail> wordList) {
+        Map<String, List<WordDetail>> wordListmap = new HashMap<>();
+        for (WordDetail word :  wordList){
+            wordListmap.computeIfAbsent(word.getWord(), k -> new ArrayList<>()).add(word);
+        }
+        return wordListmap;
     }
 
     public List<WordDetail> initWordList(String[] inputArr){
