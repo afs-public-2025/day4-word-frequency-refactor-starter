@@ -41,6 +41,17 @@ public class WordFrequencyGame {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
+    private Map<String, Long> sortWordFrequencyMap(Map<String, Long> wordFrequencyMap) {
+        return wordFrequencyMap.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+    }
+
 
     private Map<String,List<Input>> getListMap(List<Input> inputList) {
         Map<String, List<Input>> map = new HashMap<>();
