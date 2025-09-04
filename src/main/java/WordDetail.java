@@ -11,7 +11,7 @@ public class WordDetail {
         return this.word;
     }
 
-    public int getWordCount() {
+    public int getCount() {
         return this.count;
     }
 

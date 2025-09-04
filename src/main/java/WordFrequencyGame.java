@@ -12,23 +12,23 @@ public class WordFrequencyGame {
         } else {
             try {
                 List<WordDetail> wordList = initWordList(words);
-
                 Map<String, List<WordDetail>> wordListmap = getWordListMap(wordList);
-
                 wordList = getWordList(wordListmap);
-
-                wordList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-
-                StringJoiner result = new StringJoiner("\n");
-                for (WordDetail resultList : wordList) {
-                    String s = resultList.getWord() + " " +resultList.getWordCount();
-                    result.add(s);
-                }
-                return result.toString();
+                wordList.sort((word1, word2) -> word2.getCount() - word1.getCount());
+                return buildResult(wordList).toString();
             } catch (Exception e) {
                 return "Calculate Error";
             }
         }
+    }
+
+    private StringJoiner buildResult(List<WordDetail> wordList) {
+        StringJoiner result = new StringJoiner("\n");
+        for (WordDetail word : wordList) {
+            String wordResult = word.getWord() + " " +word.getCount();
+            result.add(wordResult);
+        }
+        return result;
     }
 
     private List<WordDetail> getWordList(Map<String, List<WordDetail>> wordListmap) {
@@ -48,7 +48,7 @@ public class WordFrequencyGame {
         return wordListmap;
     }
 
-    public List<WordDetail> initWordList(String[] inputArr){
+    private List<WordDetail> initWordList(String[] inputArr){
         List<WordDetail> wordList = new ArrayList<>();
         for (String word : inputArr) {
             WordDetail input = new WordDetail(word, 1);
