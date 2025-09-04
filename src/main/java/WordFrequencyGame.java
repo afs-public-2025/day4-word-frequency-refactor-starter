@@ -31,18 +31,25 @@ public class WordFrequencyGame {
         }
     }
     private  static  List<Word> calculateWordFrequency(String[] words){
-        Map<String, Integer> wordFrequencyMap = new HashMap<>();
+        Map<String, Integer> wordFrequencyMap = countWordOccurrences(words);
+        List<Word> wordsList = createWordList(wordFrequencyMap);
+        return wordsList;
+    }
 
-        for (String word : words) {
-            wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
-        }
-
+    private static List<Word> createWordList(Map<String, Integer> wordFrequencyMap) {
         List<Word> wordsList = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
             wordsList.add(new Word(entry.getKey(), entry.getValue()));
         }
-
         return wordsList;
+    }
+
+    private static Map<String, Integer> countWordOccurrences(String[] words) {
+        Map<String, Integer> wordFrequencyMap = new HashMap<>();
+        for (String word : words) {
+            wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
+        }
+        return wordFrequencyMap;
     }
 
 }
