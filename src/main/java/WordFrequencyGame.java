@@ -43,11 +43,11 @@ public class WordFrequencyGame {
     }
 
     private String joinWordSortedByFrequency(List<WordFrequency> realWordFrequency){
-        realWordFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+        realWordFrequency.sort((w1, w2) -> w2.getFrequency() - w1.getFrequency());
 
         StringJoiner joinerWordSortedByFrequency = new StringJoiner("\n");
         realWordFrequency.stream()
-                .map(wordFrequency -> wordFrequency.getValue() + " " + wordFrequency.getWordCount())
+                .map(wordFrequency -> wordFrequency.getWord() + " " + wordFrequency.getFrequency())
                 .forEach(joinerWordSortedByFrequency::add);
         return joinerWordSortedByFrequency.toString();
     }
@@ -56,7 +56,7 @@ public class WordFrequencyGame {
         Map<String, List<WordFrequency>> classifiedWordFrequencyMap = new HashMap<>();
         for (WordFrequency wordFrequency : wordFrequencyList) {
             classifiedWordFrequencyMap
-                    .computeIfAbsent(wordFrequency.getValue(), k -> new ArrayList<>())
+                    .computeIfAbsent(wordFrequency.getWord(), k -> new ArrayList<>())
                     .add(wordFrequency);
         }
         return classifiedWordFrequencyMap;
