@@ -8,34 +8,40 @@ import java.io.CharArrayWriter;
 import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
-    public String getResult(String inputStr){
+    public String processSingleWordInput(String inputStr) {
+        if (inputStr.split("\\s+").length == 1) {
+            return inputStr + " 1"; // 返回单词和数字 1
+        }
+        return null;
+    }
+    public List<Input> processMultipleWords(String inputStr) {
+        String[] wordsArray = inputStr.split("\\s+");
 
+        List<Input> inputList = new ArrayList<>();
+        for (String word : wordsArray) {
+            Input input = new Input(word, 1);
+            inputList.add(input);
+        }
+        //get the map for the next step of sizing the same word
+        Map<String, List<Input>> map =getListMap(inputList);
 
-        if (inputStr.split("\\s+").length==1) {
-            return inputStr + " 1";
+        List<Input> wordList = new ArrayList<>();
+        for (Map.Entry<String, List<Input>> entry : map.entrySet()){
+            Input input = new Input(entry.getKey(), entry.getValue().size());
+            wordList.add(input);
+        }
+
+        return wordList;
+    }
+
+    public String getSameWord(String inputStr){
+        String singleWorld=processSingleWordInput(inputStr);
+
+        if (singleWorld!=null) {
+            return singleWorld;
         } else {
-
             try {
-
-                //split the input string with 1 to n pieces of spaces
-                String[] arr = inputStr.split("\\s+");
-
-                List<Input> inputList = new ArrayList<>();
-                for (String s : arr) {
-                    Input input = new Input(s, 1);
-                    inputList.add(input);
-                }
-
-                //get the map for the next step of sizing the same word
-                Map<String, List<Input>> map =getListMap(inputList);
-
-                List<Input> list = new ArrayList<>();
-                for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-                    Input input = new Input(entry.getKey(), entry.getValue().size());
-                    list.add(input);
-                }
-                inputList = list;
-
+                List<Input> inputList=processMultipleWords(inputStr);
                 inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
                 StringJoiner joiner = new StringJoiner("\n");
@@ -45,7 +51,6 @@ public class WordFrequencyGame {
                 }
                 return joiner.toString();
             } catch (Exception e) {
-
 
                 return "Calculate Error";
             }
