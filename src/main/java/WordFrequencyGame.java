@@ -24,6 +24,11 @@ public class WordFrequencyGame {
 
         return wordFrequencies;
     }
+
+    private void sortWordsByFrequency(List<Word> words) {
+        words.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+    }
+
 }
 
 
