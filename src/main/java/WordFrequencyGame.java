@@ -21,14 +21,8 @@ public class WordFrequencyGame {
                 Map<String, List<WordFrequency>> classifiedWordFrequencyMap =groupWordFrequencyByWord(wordsArraySplitByRegex);
 
                 List<WordFrequency> realWordFrequency = getRealWordFrequency(classifiedWordFrequencyMap);
-                realWordFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
-                StringJoiner joiner = new StringJoiner("\n");
-                for (WordFrequency w : wordsArraySplitByRegex) {
-                    String s = w.getValue() + " " +w.getWordCount();
-                    joiner.add(s);
-                }
-                return joiner.toString();
+                return joinWordSortedByFrequency(realWordFrequency);
             } catch (Exception e) {
 
 
@@ -53,6 +47,16 @@ public class WordFrequencyGame {
             realWordFrequency.add(wordFrequency);
         }
         return realWordFrequency;
+    }
+
+    private String joinWordSortedByFrequency(List<WordFrequency> realWordFrequency){
+        realWordFrequency.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+
+        StringJoiner joinerWordSortedByFrequency = new StringJoiner("\n");
+        realWordFrequency.stream()
+                .map(wordFrequency -> wordFrequency.getValue() + " " + wordFrequency.getWordCount())
+                .forEach(joinerWordSortedByFrequency::add);
+        return joinerWordSortedByFrequency.toString();
     }
 
     private Map<String,List<WordFrequency>> groupWordFrequencyByWord(List<WordFrequency> wordFrequencyList) {
