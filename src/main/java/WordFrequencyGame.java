@@ -38,14 +38,7 @@ public class WordFrequencyGame {
                 Map<String, List<WordFrequency>> frequencyMap = countWordFrequency(inputStr);
                 List<WordFrequency> inputList = calculatedWordFrequency(frequencyMap);
 
-                inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-
-                StringJoiner joiner = new StringJoiner("\n");
-                for (WordFrequency w : inputList) {
-                    String s = w.getWord() + " " +w.getWordCount();
-                    joiner.add(s);
-                }
-                return joiner.toString();
+                return sortedOutput(inputList);
             } catch (Exception e) {
 
 
@@ -62,19 +55,25 @@ public class WordFrequencyGame {
                 .map(word -> new WordFrequency(word, 1))
                 .collect(Collectors.toList());
 
-        //get the map for the next step of sizing the same word
         Map<String, List<WordFrequency>> map = frequencyList.stream().collect(Collectors.groupingBy(word -> word.getWord()));
 
         return map;
     }
 
     private List<WordFrequency> calculatedWordFrequency (Map<String, List<WordFrequency>> map){
-        List<WordFrequency> calculatedFrequencyList = new ArrayList<>();
-        for (Map.Entry<String, List<WordFrequency>> entry : map.entrySet()){
-            WordFrequency input = new WordFrequency(entry.getKey(), entry.getValue().size());
-            calculatedFrequencyList.add(input);
-        }
-        return calculatedFrequencyList;
+
+        return map.entrySet().stream()
+                .map(entry -> new WordFrequency(entry.getKey(),
+                        entry.getValue() != null ? entry.getValue().size() : 0))
+                .collect(Collectors.toList());
+    }
+
+    private String sortedOutput (List<WordFrequency> inputList){
+
+        return inputList.stream()
+                .sorted((w1, w2) -> Integer.compare(w2.getWordCount(), w1.getWordCount()))
+                .map(w -> w.getWord() + " " + w.getWordCount())
+                .collect(Collectors.joining("\n"));
     }
 
 
