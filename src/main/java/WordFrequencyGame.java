@@ -10,12 +10,12 @@ public class WordFrequencyGame {
     private static final String SPACE_REGEX = "\\s+";
     private static final String CALCULATE_ERROR = "Calculate Error";
     private static final int INITIAL_COUNT = 1;
-    public String getResult(String inputStr){
-        if (inputStr.split(SPACE_REGEX).length==1) {
-            return inputStr + " 1";
+    public String getResult(String targetString){
+        if (targetString.split(SPACE_REGEX).length==1) {
+            return targetString + " 1";
         } else {
             try {
-                List<WordFrequency> wordsArraySplitByRegex = getWordsArraySplitByRegex(inputStr);
+                List<WordFrequency> wordsArraySplitByRegex = getWordsArraySplitByRegex(targetString);
                 Map<String, List<WordFrequency>> classifiedWordFrequencyMap =groupWordFrequencyByWord(wordsArraySplitByRegex);
                 List<WordFrequency> realWordFrequency = getRealWordFrequency(classifiedWordFrequencyMap);
                 return joinWordSortedByFrequency(realWordFrequency);
