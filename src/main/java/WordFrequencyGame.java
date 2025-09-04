@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 public class WordFrequencyGame {
-    public String processSingleWordFrequency(String inputStr) {
+    public String processSingleWord(String inputStr) {
         if (inputStr.split("\\s+").length == 1) {
             return inputStr + " 1"; // 返回单词和数字 1
         }
         return null;
     }
-    public List<WordFrequency> processMultipleWordsFrequency(String inputStr) {
+    public List<WordFrequency> processMultipleWords(String inputStr) {
         String[] wordsArray = inputStr.split("\\s+");
 
         List<WordFrequency> wordFrequencyList = new ArrayList<>();
@@ -32,12 +32,12 @@ public class WordFrequencyGame {
     }
 
     public String processWordFormat(String inputStr){
-        String singleWorld= processSingleWordFrequency(inputStr);
+        String singleWorld= processSingleWord(inputStr);
         if (singleWorld!=null) {
             return singleWorld;
         } else {
             try {
-                List<WordFrequency> wordFrequencyList = processMultipleWordsFrequency(inputStr);
+                List<WordFrequency> wordFrequencyList = processMultipleWords(inputStr);
                 wordFrequencyList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
                 StringJoiner joiner = new StringJoiner("\n");
                 for (WordFrequency w : wordFrequencyList) {
@@ -56,17 +56,9 @@ public class WordFrequencyGame {
     private Map<String,List<WordFrequency>> getListMap(List<WordFrequency> wordFrequencyList) {
         Map<String, List<WordFrequency>> map = new HashMap<>();
         for (WordFrequency wordFrequency : wordFrequencyList){
-            if (!map.containsKey(wordFrequency.getValue())){
-                ArrayList wordlist = new ArrayList<>();
-                wordlist.add(wordFrequency);
-                map.put(wordFrequency.getValue(), wordlist);
-            }
+            map.computeIfAbsent(wordFrequency.getValue(), k -> new ArrayList<>()).add(wordFrequency);
 
-            else {
-                map.get(wordFrequency.getValue()).add(wordFrequency);
-            }
         }
-
 
         return map;
     }
