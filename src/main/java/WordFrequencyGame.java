@@ -16,12 +16,10 @@ public class WordFrequencyGame {
         wordCount.forEach((word, count) -> wordFrequencyList.add(new WordFrequency(word, count)));
 
         // Higher occurrence first, followed by appearance order
-        wordFrequencyList.sort((w1, w2) -> w2.getWordOccurrence() - w1.getWordOccurrence());
+        wordFrequencyList.sort((wordFrequency1, wordFrequency2) -> wordFrequency2.getWordOccurrence() - wordFrequency1.getWordOccurrence());
 
         StringJoiner result = new StringJoiner("\n");
         wordFrequencyList.forEach(wordFrequency -> result.add(wordFrequency.getWord() + " " + wordFrequency.getWordOccurrence()));
         return result.toString();
     }
-
-
 }
