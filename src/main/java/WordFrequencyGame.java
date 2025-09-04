@@ -48,7 +48,20 @@ public class WordFrequencyGame {
 //            }
 //        }
 //    }
-
+    private List<WordFrequency> countWordFrequencies(String inputStr) {
+        String[] words = inputStr.split("\\s+");
+        List<WordFrequency> wordFrequencyList = new ArrayList<>();
+        for(String word : words) {
+            word = word.toLowerCase();
+            WordFrequency wordFrequency = findWordFrequency(wordFrequencyList, word);
+            if (wordFrequency == null) {
+                wordFrequencyList.add(new WordFrequency(word, 1));
+            } else {
+                wordFrequency.incrementFrequency();
+            }
+        }
+        return wordFrequencyList;
+    }
     private WordFrequency findWordFrequency(List<WordFrequency> wordFrequencyList, String word) {
         for (WordFrequency wordFrequency : wordFrequencyList) {
             if (wordFrequency.getWord().equals(word)) {
