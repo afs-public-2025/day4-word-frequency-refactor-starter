@@ -11,26 +11,16 @@ public class WordFrequencyGame {
     }
 
     public String getResult(String inputStr){
-        if (inputStr.split("\\s+").length==1) {
-            return inputStr + " 1";
-        }
-        else {
-            try {
-                List<WordFrequency> wordFrequencyList = new ArrayList<>();
-                Map<String, Integer> wordCount = getWordCount(inputStr);
-                wordCount.forEach((word, count) -> wordFrequencyList.add(new WordFrequency(word, count)));
+        List<WordFrequency> wordFrequencyList = new ArrayList<>();
+        Map<String, Integer> wordCount = getWordCount(inputStr);
+        wordCount.forEach((word, count) -> wordFrequencyList.add(new WordFrequency(word, count)));
 
-                // Higher occurrence first, followed by appearance order
-                wordFrequencyList.sort((w1, w2) -> w2.getWordOccurrence() - w1.getWordOccurrence());
+        // Higher occurrence first, followed by appearance order
+        wordFrequencyList.sort((w1, w2) -> w2.getWordOccurrence() - w1.getWordOccurrence());
 
-                StringJoiner result = new StringJoiner("\n");
-                wordFrequencyList.forEach(wordFrequency -> result.add(wordFrequency.getWord() + " " + wordFrequency.getWordOccurrence()));
-                return result.toString();
-            }
-            catch (Exception e) {
-                return "Calculate Error";
-            }
-        }
+        StringJoiner result = new StringJoiner("\n");
+        wordFrequencyList.forEach(wordFrequency -> result.add(wordFrequency.getWord() + " " + wordFrequency.getWordOccurrence()));
+        return result.toString();
     }
 
 
