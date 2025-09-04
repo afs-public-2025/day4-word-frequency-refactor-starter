@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WordFrequencyGame {
@@ -13,19 +14,12 @@ public class WordFrequencyGame {
         if (inputStr.split(SPACE_REGEX).length==1) {
             return inputStr + " 1";
         } else {
-
             try {
-
                 List<WordFrequency> wordsArraySplitByRegex = getWordsArraySplitByRegex(inputStr);
-
                 Map<String, List<WordFrequency>> classifiedWordFrequencyMap =groupWordFrequencyByWord(wordsArraySplitByRegex);
-
                 List<WordFrequency> realWordFrequency = getRealWordFrequency(classifiedWordFrequencyMap);
-
                 return joinWordSortedByFrequency(realWordFrequency);
             } catch (Exception e) {
-
-
                 return CALCULATE_ERROR;
             }
         }
@@ -41,12 +35,11 @@ public class WordFrequencyGame {
     }
 
     private List<WordFrequency> getRealWordFrequency(Map<String, List<WordFrequency>> classifiedWordFrequencyMap) {
-        List<WordFrequency> realWordFrequency = new ArrayList<>();
-        for (Map.Entry<String, List<WordFrequency>> entry : classifiedWordFrequencyMap.entrySet()){
-            WordFrequency wordFrequency = new WordFrequency(entry.getKey(), entry.getValue().size());
-            realWordFrequency.add(wordFrequency);
-        }
+        List<WordFrequency> realWordFrequency = classifiedWordFrequencyMap.entrySet().stream()
+                .map(entry -> new WordFrequency(entry.getKey(), entry.getValue().size()))
+                .collect(Collectors.toList());
         return realWordFrequency;
+
     }
 
     private String joinWordSortedByFrequency(List<WordFrequency> realWordFrequency){
