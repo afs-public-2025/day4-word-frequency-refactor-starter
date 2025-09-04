@@ -29,6 +29,11 @@ public class WordFrequencyGame {
         words.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
     }
 
+    private String formatResult(List<Word> words) {
+        return words.stream()
+                .map(w -> w.getValue() + " " + w.getWordCount())
+                .collect(Collectors.joining("\n"));
+    }
 }
 
 
