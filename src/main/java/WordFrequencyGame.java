@@ -10,9 +10,9 @@ public class WordFrequencyGame {
         try {
             Map<String, Integer> wordsCountMap = getWordsFrequencyMap(inputStr);
 
-            List<Word> wordsInfoSortedByCount = getSortedInputList(wordsCountMap);
+            List<Word> wordsListSortedByCount = getSortedWordsList(wordsCountMap);
 
-            return generateWordFrequencyInfo(wordsInfoSortedByCount);
+            return generateWordFrequencyInfo(wordsListSortedByCount);
         } catch (Exception e) {
             return "Calculate Error";
         }
@@ -27,7 +27,7 @@ public class WordFrequencyGame {
         return wordsFrequencyMap;
     }
 
-    private List<Word> getSortedInputList(Map<String, Integer>wordsCountMap) {
+    private List<Word> getSortedWordsList(Map<String, Integer>wordsCountMap) {
         List<Word> wordsInfoSortedByCount = new ArrayList<>();
         wordsCountMap.forEach((word, count) -> {
             Word input = new Word(word, count);
@@ -37,8 +37,8 @@ public class WordFrequencyGame {
         return wordsInfoSortedByCount;
     }
 
-    private String generateWordFrequencyInfo(List<Word> inputList) {
-        return inputList.stream().map(info->info.getWordValue()+" "+info.getWordCount())
+    private String generateWordFrequencyInfo(List<Word> wordsListSortedByCount) {
+        return wordsListSortedByCount.stream().map(info->info.getWordValue()+" "+info.getWordCount())
                 .collect(Collectors.joining("\n"));
     }
 
