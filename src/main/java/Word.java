@@ -1,10 +1,10 @@
 public class Word {
     private final String wordValue;
-    private final int wordCount;
+    private final int wordFrequency;
 
-    public Word(String wordValue, int wordCount) {
+    public Word(String wordValue, int wordFrequency) {
         this.wordValue = wordValue;
-        this.wordCount = wordCount;
+        this.wordFrequency = wordFrequency;
     }
 
 
@@ -13,7 +13,7 @@ public class Word {
     }
 
     public int getWordCount() {
-        return this.wordCount;
+        return this.wordFrequency;
     }
 
 
