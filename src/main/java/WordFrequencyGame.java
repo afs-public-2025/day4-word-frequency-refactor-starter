@@ -5,35 +5,10 @@ import java.util.stream.Collectors;
 public class WordFrequencyGame {
     public String getResult(String inputStr){
         try {
-          List<String> extractedWords = Arrays.stream(inputStr.split("\\s+")).toList();
-
-          Map<String, Long> frequencyMap = buildWordFrequencyMap(extractedWords);
-          frequencyMap = sortWordFrequencyMap(frequencyMap);
-//
-//            List<Input> inputList = new ArrayList<>();
-//            for (String s : extractedWords) {
-//                Input input = new Input(s, 1);
-//                inputList.add(input);
-//            }
-//
-//            //get the map for the next step of sizing the same word
-//            Map<String, List<Input>> map = getListMap(inputList);
-//
-//            List<Input> list = new ArrayList<>();
-//            for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-//                Input input = new Input(entry.getKey(), entry.getValue().size());
-//                list.add(input);
-//            }
-//            inputList = list;
-//
-//            inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
-
-            StringJoiner joiner = new StringJoiner("\n");
-            for (Map.Entry<String, Long> wordToFrequency: frequencyMap.entrySet()) {
-                String s = wordToFrequency.getKey() + " " + wordToFrequency.getValue();
-                joiner.add(s);
-            }
-            return joiner.toString();
+            List<String> extractedWords = Arrays.stream(inputStr.split("\\s+")).toList();
+            Map<String, Long> frequencyMap = buildWordFrequencyMap(extractedWords);
+            frequencyMap = sortWordFrequencyMap(frequencyMap);
+            return buildFrequencyResult(frequencyMap);
         } catch (Exception e) {
             return "Calculate Error";
         }
@@ -55,24 +30,11 @@ public class WordFrequencyGame {
                 ));
     }
 
-
-    private Map<String,List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> map = new HashMap<>();
-        for (Input input :  inputList){
-            if (!map.containsKey(input.getValue())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(input);
-                map.put(input.getValue(), arr);
-            }
-
-            else {
-                map.get(input.getValue()).add(input);
-            }
+    private String buildFrequencyResult(Map<String, Long> frequencyMap) {
+        StringJoiner frequencyResult = new StringJoiner("\n");
+        for (Map.Entry<String, Long> wordToFrequency: frequencyMap.entrySet()) {
+            frequencyResult.add(wordToFrequency.getKey() + " " + wordToFrequency.getValue());
         }
-
-
-        return map;
+        return frequencyResult.toString();
     }
-
-
 }
