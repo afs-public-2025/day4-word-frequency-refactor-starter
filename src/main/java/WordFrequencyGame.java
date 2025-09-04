@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
@@ -13,60 +9,24 @@ public class WordFrequencyGame {
         } else {
 
             try {
-
-                //split the input string with 1 to n pieces of spaces
-                String[] arr = inputStr.split("\\s+");
-
-                List<Input> inputList = new ArrayList<>();
-                for (String s : arr) {
-                    Input input = new Input(s, 1);
-                    inputList.add(input);
+                String[] splitArray = inputStr.split("\\s+");
+                Map<String, Integer> countMap = new HashMap<>();
+                for (String s : splitArray) {
+                    countMap.merge(s, 1, Integer::sum);
                 }
-
-                //get the map for the next step of sizing the same word
-                Map<String, List<Input>> map =getListMap(inputList);
-
-                List<Input> list = new ArrayList<>();
-                for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-                    Input input = new Input(entry.getKey(), entry.getValue().size());
-                    list.add(input);
-                }
-                inputList = list;
-
-                inputList.sort((w1, w2) -> w2.getCount() - w1.getCount());
+                List<Map.Entry<String, Integer>> entries = new ArrayList<>(countMap.entrySet());
+                entries.sort((e1, e2) -> e2.getValue() - e1.getValue());
 
                 StringJoiner joiner = new StringJoiner("\n");
-                for (Input w : inputList) {
-                    String s = w.getWord() + " " +w.getCount();
+                for (Map.Entry<String, Integer> map : entries) {
+                    String s = map.getKey() + " " + map.getValue();
                     joiner.add(s);
                 }
                 return joiner.toString();
             } catch (Exception e) {
-
-
                 return "Calculate Error";
             }
         }
-    }
-
-
-    private Map<String,List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> map = new HashMap<>();
-        for (Input input :  inputList){
-//       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(input.getWord())){
-                ArrayList arr = new ArrayList<>();
-                arr.add(input);
-                map.put(input.getWord(), arr);
-            }
-
-            else {
-                map.get(input.getWord()).add(input);
-            }
-        }
-
-
-        return map;
     }
 
 
