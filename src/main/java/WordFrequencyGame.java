@@ -5,15 +5,24 @@ import java.time.LocalDateTime;
 
 public class WordFrequencyGame {
     public String buildWordFrequencyGameResult(String inputStr){
+        if(inputStr.split("\\s+").length==1){
+            return inputStr + " 1";
+        }
+        else{
+            try {
+                List<WordFrequency> sourceWordFrequencyList = convertWordFrequencyMapToSortedWordFrequencyList(
+                        splitStringToWordFrequencyMap(inputStr)
+                );
+                StringJoiner resultBuilder = new StringJoiner("\n");
+                sourceWordFrequencyList.stream().forEach((wordFrequency) -> {
+                    resultBuilder.add(wordFrequency.getWord() + " " + wordFrequency.getOccurrenceFrequency());
+                });
+                return resultBuilder.toString();
+            } catch (Exception e) {
+                return "Calculate Error";
+            }
+        }
 
-        List<WordFrequency> sourceWordFrequencyList=convertWordFrequencyMapToSortedWordFrequencyList(
-                splitStringToWordFrequencyMap(inputStr)
-        );
-        StringBuilder resultBuilder=new StringBuilder().append("\n");
-        sourceWordFrequencyList.stream().forEach((wordFrequency )->{
-            resultBuilder.append(wordFrequency.getWord()+" "+wordFrequency.getOccurrenceFrequency());
-        });
-        return resultBuilder.toString();
 
 //        if (inputStr.split("\\s+").length==1) {
 //            return inputStr + " 1";
@@ -96,7 +105,7 @@ public class WordFrequencyGame {
         sourceWordFrequencyMap.keySet().stream().forEach((word)->{
             targetWordFrequencyList.add(new WordFrequency(word,sourceWordFrequencyMap.get(word)));
         });
-        targetWordFrequencyList.stream().sorted((w1, w2) -> w2.getOccurrenceFrequency() - w1.getOccurrenceFrequency());
+        targetWordFrequencyList.sort((w1, w2) -> w2.getOccurrenceFrequency() - w1.getOccurrenceFrequency());
         return targetWordFrequencyList;
     }
 
