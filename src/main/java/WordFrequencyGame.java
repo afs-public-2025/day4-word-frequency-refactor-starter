@@ -20,6 +20,17 @@ public class WordFrequencyGame {
                 .collect(Collectors.groupingBy(e -> e, Collectors.summingInt(e -> 1)));
     }
 
+    public Map<String, Integer> sortMapByValue(Map<String, Integer> map) {
+        return map.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+    }
 
 
 }
