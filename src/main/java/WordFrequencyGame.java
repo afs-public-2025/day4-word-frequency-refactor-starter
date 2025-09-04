@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
 public class WordFrequencyGame {
@@ -10,14 +8,20 @@ public class WordFrequencyGame {
         if (inputStr == null || inputStr.trim().isEmpty()) {
             return "Calculate Error";
         }
-        return "";
-
+        try{
+            List<WordFrequency> wordFrequencyList = countWordFrequencies(inputStr);
+            wordFrequencyList.sort((w1,w2)-> w2.getFrequency()- w1.getFrequency());
+            return buildResultString(wordFrequencyList);
+        }catch (Exception e){
+            return "Calculate Error";
+        }
     }
     private List<WordFrequency> countWordFrequencies(String inputStr) {
         String[] words = inputStr.split("\\s+");
         List<WordFrequency> wordFrequencyList = new ArrayList<>();
         for(String word : words) {
-            WordFrequency wordFrequency = findWordFrequency(wordFrequencyList, word);
+            String lowerCasedWord = word.toLowerCase();
+            WordFrequency wordFrequency = findWordFrequency(wordFrequencyList, lowerCasedWord);
             if (wordFrequency == null) {
                 wordFrequencyList.add(new WordFrequency(word, 1));
             } else {
