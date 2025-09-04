@@ -6,14 +6,19 @@ import java.time.LocalDateTime;
 public class WordFrequencyGame {
     public String buildWordFrequencyGameResult(String inputStr){
 
-        List<WordFrequency> sourceWordFrequencyList=convertWordFrequencyMapToSortedWordFrequencyList(
-                splitStringToWordFrequencyMap(inputStr)
-        );
-        StringBuilder resultBuilder=new StringBuilder().append("\n");
-        sourceWordFrequencyList.stream().forEach((wordFrequency )->{
-            resultBuilder.append(wordFrequency.getWord()+" "+wordFrequency.getOccurrenceFrequency());
-        });
-        return resultBuilder.toString();
+        try{
+            List<WordFrequency> sourceWordFrequencyList = convertWordFrequencyMapToSortedWordFrequencyList(
+                    splitStringToWordFrequencyMap(inputStr)
+            );
+            StringBuilder resultBuilder = new StringBuilder().append("\n");
+            sourceWordFrequencyList.stream().forEach((wordFrequency) -> {
+                resultBuilder.append(wordFrequency.getWord() + " " + wordFrequency.getOccurrenceFrequency());
+            });
+            return resultBuilder.toString();
+        }catch (Exception e){
+            return "Calculate Error";
+        }
+
 
 //        if (inputStr.split("\\s+").length==1) {
 //            return inputStr + " 1";
