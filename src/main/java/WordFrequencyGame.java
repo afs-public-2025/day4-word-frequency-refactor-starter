@@ -17,30 +17,32 @@ public class WordFrequencyGame {
 
             try {
 
-                //split the input string with 1 to n pieces of spaces
-                String[] arr = inputStr.split("\\s+");
+//                //split the input string with 1 to n pieces of spaces
+//                String[] words = inputStr.split("\\s+");
+//
+//                List<WordFrequency> inputList = new ArrayList<>();
+//                for (String s : words) {
+//                    WordFrequency input = new WordFrequency(s, 1);
+//                    inputList.add(input);
+//                }
+//
+//                //get the map for the next step of sizing the same word
+//                Map<String, List<WordFrequency>> map =getListMap(inputList);
+//
+//                List<WordFrequency> list = new ArrayList<>();
+//                for (Map.Entry<String, List<WordFrequency>> entry : map.entrySet()){
+//                    WordFrequency input = new WordFrequency(entry.getKey(), entry.getValue().size());
+//                    list.add(input);
+//                }
+//                inputList = list;
 
-                List<Input> inputList = new ArrayList<>();
-                for (String s : arr) {
-                    Input input = new Input(s, 1);
-                    inputList.add(input);
-                }
-
-                //get the map for the next step of sizing the same word
-                Map<String, List<Input>> map =getListMap(inputList);
-
-                List<Input> list = new ArrayList<>();
-                for (Map.Entry<String, List<Input>> entry : map.entrySet()){
-                    Input input = new Input(entry.getKey(), entry.getValue().size());
-                    list.add(input);
-                }
-                inputList = list;
+                List<WordFrequency> inputList = countWordFrequency(inputStr);
 
                 inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
                 StringJoiner joiner = new StringJoiner("\n");
-                for (Input w : inputList) {
-                    String s = w.getValue() + " " +w.getWordCount();
+                for (WordFrequency w : inputList) {
+                    String s = w.getWord() + " " +w.getWordCount();
                     joiner.add(s);
                 }
                 return joiner.toString();
@@ -52,19 +54,41 @@ public class WordFrequencyGame {
         }
     }
 
+    private List<WordFrequency> countWordFrequency (String inputStr){
+        //split the input string with 1 to n pieces of spaces
+        String[] words = inputStr.split("\\s+");
 
-    private Map<String,List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> map = new HashMap<>();
-        for (Input input :  inputList){
+        List<WordFrequency> frequencyList = new ArrayList<>();
+        for (String s : words) {
+            WordFrequency input = new WordFrequency(s, 1);
+            frequencyList.add(input);
+        }
+
+        //get the map for the next step of sizing the same word
+        Map<String, List<WordFrequency>> map =getListMap(frequencyList);
+
+        List<WordFrequency> list = new ArrayList<>();
+        for (Map.Entry<String, List<WordFrequency>> entry : map.entrySet()){
+            WordFrequency input = new WordFrequency(entry.getKey(), entry.getValue().size());
+            list.add(input);
+        }
+
+        return list;
+    }
+
+
+    private Map<String,List<WordFrequency>> getListMap(List<WordFrequency> frequencyList) {
+        Map<String, List<WordFrequency>> map = new HashMap<>();
+        for (WordFrequency input :  frequencyList){
 //       map.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-            if (!map.containsKey(input.getValue())){
+            if (!map.containsKey(input.getWord())){
                 ArrayList arr = new ArrayList<>();
                 arr.add(input);
-                map.put(input.getValue(), arr);
+                map.put(input.getWord(), arr);
             }
 
             else {
-                map.get(input.getValue()).add(input);
+                map.get(input.getWord()).add(input);
             }
         }
 
