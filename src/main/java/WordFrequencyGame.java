@@ -32,5 +32,11 @@ public class WordFrequencyGame {
                 ));
     }
 
+    public String convertMapToResult(Map<String, Integer> map) {
+        return map.entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + " " + entry.getValue())
+                .collect(Collectors.joining("\n"));
+    }
 
 }
