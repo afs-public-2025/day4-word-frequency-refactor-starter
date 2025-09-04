@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
@@ -14,18 +14,17 @@ public class WordFrequencyGame {
                 List<Word> wordsList=calculateWordFrequency(words);
                 sortWordList(wordsList);
 
-                StringJoiner joiner = new StringJoiner("\n");
-                for (Word w : wordsList) {
-                    String s = w.getValue() + " " +w.getWordCount();
-                    joiner.add(s);
-                }
-                return joiner.toString();
+                return buildWordFrequencyResult(wordsList);
             } catch (Exception e) {
-
-
                 return "Calculate Error";
             }
         }
+    }
+
+    private static String buildWordFrequencyResult(List<Word> wordsList) {
+        return wordsList.stream()
+                .map(word -> word.getValue() + " " + word.getWordCount())
+                .collect(Collectors.joining("\n"));
     }
 
     private static void sortWordList(List<Word> wordsList) {
