@@ -4,17 +4,13 @@ import java.util.StringJoiner;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
-
         if (inputStr == null || inputStr.trim().isEmpty()) {
             return "Calculate Error";
         }
-        try{
-            List<WordFrequency> wordFrequencyList = countWordFrequencies(inputStr);
-            wordFrequencyList.sort((w1,w2)-> w2.getFrequency()- w1.getFrequency());
-            return buildResultString(wordFrequencyList);
-        }catch (Exception e){
-            return "Calculate Error";
-        }
+        List<WordFrequency> wordFrequencyList = countWordFrequencies(inputStr);
+        wordFrequencyList.sort((w1,w2)-> w2.getFrequency()- w1.getFrequency());
+        return buildResultString(wordFrequencyList);
+
     }
     private List<WordFrequency> countWordFrequencies(String inputStr) {
         String[] words = inputStr.split("\\s+");
