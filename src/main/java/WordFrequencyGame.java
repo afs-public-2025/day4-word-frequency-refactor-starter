@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class WordFrequencyGame {
     public String getResult(String inputStr){
@@ -35,12 +36,8 @@ public class WordFrequencyGame {
         return null;
     }
     private String buildResultString(List<WordFrequency> wordFrequencyList) {
-        StringJoiner result = new StringJoiner("\n");
-        for (WordFrequency wordFrequency : wordFrequencyList) {
-            result.add(wordFrequency.getWord() + " " + wordFrequency.getFrequency());
-        }
-        return result.toString();
+        return wordFrequencyList.stream()
+                .map(WordFrequency::buildWorkFrequencyLine)
+                .collect(Collectors.joining("\n"));
     }
-
-
 }
