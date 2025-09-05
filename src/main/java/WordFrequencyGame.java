@@ -23,7 +23,8 @@ public class WordFrequencyGame {
 
     private List<WordFrequency> calculateWordFrequency(String inputStr) {
         return Arrays.stream(inputStr.split("\\s+"))
-                .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
+                // 大小写不同的word统一为小写
+                .collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()))
                 .entrySet().stream()
                 .map(entry -> new WordFrequency(entry.getKey(), entry.getValue().intValue()))
                 .sorted(Comparator.comparingInt(WordFrequency::getCount).reversed())
@@ -35,5 +36,11 @@ public class WordFrequencyGame {
                 .collect(Collectors.joining("\n"));
     }
 
+
+    public static void main(String[] args) {
+        String inputStr = "the the is Hello Hello Hello Hello hello hello hello afhiaf awrwra afhiaf";
+        WordFrequencyGame wordFrequencyGame = new WordFrequencyGame();
+        System.out.println(wordFrequencyGame.getResult(inputStr));
+    }
 
 }
