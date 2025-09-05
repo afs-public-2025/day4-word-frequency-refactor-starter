@@ -12,22 +12,13 @@ version = '1.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
-allprojects {
-    repositories {
-        maven {
-            url 'https://maven.aliyun.com/repository/public/'
-        }
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
-
-//repositories {
-//    mavenCentral()
-//}
 
 jacocoTestReport {
     reports {
