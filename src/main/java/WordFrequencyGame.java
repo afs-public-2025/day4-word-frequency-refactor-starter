@@ -11,8 +11,8 @@ public class WordFrequencyGame {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
-                .sorted((wordValueCountMap1,wordValueCountMap2)->wordValueCountMap2.getValue().intValue() - wordValueCountMap1.getValue().intValue())
-                .map(wordValueCountMap -> wordValueCountMap.getKey() + " " + wordValueCountMap.getValue())
+                .sorted(Comparator.comparingLong(Map.Entry<String, Long>::getValue).reversed())
+                .map(entry -> entry.getKey() + " " + entry.getValue())
                 .collect(Collectors.joining("\n"));
     }
 
