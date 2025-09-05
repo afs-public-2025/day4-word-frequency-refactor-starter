@@ -19,5 +19,9 @@ public class WordFrequency {
         this.frequency++;
     }
 
+    public String buildWorkFrequencyLine() {
+        return this.word + " " + this.frequency;
+    }
+
 
 }
